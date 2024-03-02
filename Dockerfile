@@ -13,7 +13,10 @@ FROM openjdk:17-slim
 
 WORKDIR /app
 
-COPY --from=builder /app/target/*.jar .
+COPY --from=builder /app/target/*.jar app.jar
+
+# Expose the port on which your Spring Boot application will run
+EXPOSE 8080
 
 # Executable or CMD based on your application needs
-CMD ["java", "-jar", "your-app.jar"]
+CMD ["java", "-jar", "app.jar"]
