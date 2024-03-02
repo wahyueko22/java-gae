@@ -9,4 +9,9 @@ public class HaiController {
     public String extraController() {
         return "ok";
     }
+
+    @GetMapping("/hey")
+    public String hey() {
+        return "i am good";
+    }
 }
