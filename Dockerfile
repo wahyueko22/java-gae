@@ -1,19 +1,19 @@
-# Base image with Java 17
-FROM openjdk:17-slim
+# Stage 1: Build stage with Maven
+FROM maven:3.8.5-openjdk-17-slim AS builder
 
-RUN apk add --no-cache openjdk17 openjdk17-jre maven
-# Set working directory
 WORKDIR /app
 
 COPY . .
 
-RUN mvn clean package
+# Run Maven commands
+RUN mvn package
 
-# Copy JAR file
-COPY target/*.jar app.jar
+# Stage 2: Final image (copy JAR and dependencies)
+FROM openjdk:17-slim
 
-# Expose port (replace 8080 with your application's port)
-EXPOSE 8080
+WORKDIR /app
 
-# Command to run the application
-CMD ["java", "-jar", "app.jar"]
+COPY --from=builder /app/target/*.jar .
+
+# Executable or CMD based on your application needs
+CMD ["java", "-jar", "your-app.jar"]
