@@ -1,8 +1,13 @@
 # Base image with Java 17
 FROM openjdk:17-slim
 
+RUN apk add --no-cache openjdk17 openjdk17-jre maven
 # Set working directory
 WORKDIR /app
+
+COPY . .
+
+RUN mvn clean package
 
 # Copy JAR file
 COPY target/*.jar app.jar
